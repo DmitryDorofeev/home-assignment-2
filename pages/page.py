@@ -43,3 +43,48 @@ class PageObject():
         button_write = wait.until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, '.write-item-type-topic>.write-item-link')))
         button_write.click()
+
+    def has_text_field(self):
+        wait = WebDriverWait(self.driver, 10)
+        field = wait.until(
+            EC.element_to_be_clickable((By.ID, 'id_text')))
+        return field.is_displayed()
+
+    def select_blog_by_id(self, num):
+        select = self.driver.find_element_by_css_selector('#id_blog_chzn>.chzn-single')
+        select.click()
+        option = self.driver.find_element_by_css_selector('#id_blog_chzn .active-result:nth-child({})'.format(num))
+        option.click()
+
+    def go_to_topic_edit(self):
+        self.driver.get('http://ftest.stud.tech-mail.ru/blog/topic/create/')
+
+    def set_title(self, title):
+        field = self.driver.find_element_by_id('id_title')
+        field.send_keys(title)
+
+    def set_short_text(self, text):
+        field = self.driver.find_element_by_id('id_text_short')
+        field.send_keys(text)
+
+    def set_text(self, text):
+        field = self.driver.find_element_by_id('id_text')
+        field.send_keys(text)
+
+    def get_content(self):
+        content = self.driver.find_element_by_css_selector('.topic-content')
+        return content.text
+
+    def save(self):
+        form = self.driver.find_element_by_css_selector('.blogs-left>form')
+        form.submit()
+
+    def remove_topic(self):
+        remove_link = self.driver.find_element_by_css_selector('a.actions-delete')
+        remove_link.click()
+        remove_form = self.driver.find_element_by_css_selector('#content>form')
+        remove_form.submit()
+
+    def has_error(self):
+        error = self.driver.find_element_by_class_name('system-message-error')
+        return error.is_displayed()
