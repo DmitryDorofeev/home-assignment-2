@@ -75,11 +75,15 @@ class PageObject():
         content = self.driver.find_element_by_css_selector('.topic-content')
         return content.text
 
+    def get_title(self):
+        title = self.driver.find_element_by_css_selector('h1.topic-title>a')
+        return title.text
+
     def save(self):
         form = self.driver.find_element_by_css_selector('.blogs-left>form')
         form.submit()
 
-    def remove_topic(self):
+    def remove(self):
         remove_link = self.driver.find_element_by_css_selector('a.actions-delete')
         remove_link.click()
         remove_form = self.driver.find_element_by_css_selector('#content>form')
