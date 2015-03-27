@@ -12,7 +12,7 @@ import time
 class PageObject():
     def __init__(self):
         self.driver = webdriver.Remote(
-            command_executor='http://127.0.0.1:4444/wd/hub',
+            command_executor='http://127.0.0.1:5555/wd/hub',
             desired_capabilities=getattr(DesiredCapabilities, os.environ.get('TTHA2BROWSER', 'CHROME'))
         )
         self.driver.get('http://ftest.stud.tech-mail.ru/')
@@ -103,3 +103,9 @@ class PageObject():
         field = self.driver.find_element_by_id('id_text')
         field.click()
         self.driver.implicitly_wait(10)
+
+    def get_editor_text(self):
+        wait = WebDriverWait(self.driver, 10)
+        field = wait.until(
+            EC.text_to_be_present_in_element((By.ID, 'id_text')))
+        return field.text

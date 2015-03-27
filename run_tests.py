@@ -3,6 +3,7 @@ import unittest
 import os
 import sys
 from tests.test_post import PostTestCase
+from tests.tests_post_create import PostCreateTestCase
 from tests.test_main import MainTestCase
 
 source_dir = os.path.join(os.path.dirname(__file__), 'tests')
@@ -14,6 +15,7 @@ if __name__ == '__main__':
 
     suite = unittest.TestSuite((
         unittest.makeSuite(PostTestCase),
+        unittest.makeSuite(PostCreateTestCase),
         unittest.makeSuite(MainTestCase),
     ))
     result = unittest.TextTestRunner().run(suite)
