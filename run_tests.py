@@ -12,9 +12,6 @@ if __name__ == '__main__':
     if 'TTHA2PASSWORD' not in os.environ:
         sys.exit('No password set')
 
-    if 'TTHA2BROWSER' not in os.environ:
-        sys.exit('No browser set')
-
     suite = unittest.TestSuite((
         unittest.makeSuite(PostTestCase),
         unittest.makeSuite(MainTestCase),

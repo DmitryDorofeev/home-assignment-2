@@ -4,14 +4,16 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 import os
+import time
 
 
 class PageObject():
     def __init__(self):
         self.driver = webdriver.Remote(
             command_executor='http://127.0.0.1:4444/wd/hub',
-            desired_capabilities=getattr(DesiredCapabilities, os.environ.get('TTHA2BROWSER'))
+            desired_capabilities=getattr(DesiredCapabilities, os.environ.get('TTHA2BROWSER', 'CHROME'))
         )
         self.driver.get('http://ftest.stud.tech-mail.ru/')
 
@@ -92,3 +94,12 @@ class PageObject():
     def has_error(self):
         error = self.driver.find_element_by_class_name('system-message-error')
         return error.is_displayed()
+
+    def bold(self):
+        bold_btn = self.driver.find_element_by_css_selector('#container .editor-bold>a')
+        bold_btn.click()
+
+    def select_text(self):
+        field = self.driver.find_element_by_id('id_text')
+        field.click()
+        self.driver.implicitly_wait(10)

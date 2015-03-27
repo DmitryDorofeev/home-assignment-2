@@ -71,3 +71,13 @@ class PostTestCase(unittest.TestCase):
         self.topic.set_text('sample text')
         self.topic.save()
         self.assertTrue(self.topic.has_error())
+
+    def test_create_bold_text(self):
+        self.topic.select_blog_by_id(2)
+        self.topic.set_title('text boundary test')
+        self.topic.set_short_text('short_text')
+        self.topic.bold()
+        self.topic.set_text('sample text')
+        self.topic.select_text()
+        self.topic.save()
+        self.topic.remove()
