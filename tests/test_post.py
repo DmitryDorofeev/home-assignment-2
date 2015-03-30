@@ -1,9 +1,15 @@
 __author__ = 'dmitry'
 
+"""
+Тесты добавления топиков, где топик не должен создаваться
+"""
+
 import unittest
 from pages.page import PageObject
 
 TITLE_BOUNDARY = 250
+BOLD_LINE = '****'
+ITALIC_LINE = '**'
 
 
 class PostTestCase(unittest.TestCase):
@@ -59,4 +65,12 @@ class PostTestCase(unittest.TestCase):
         self.topic.set_short_text('short_text')
         self.topic.bold()
         text = self.topic.get_editor_text()
-        self.assertEqual(text, '******')
+        self.assertEqual(text, BOLD_LINE)
+
+    def test_create_italic_text(self):
+        self.topic.select_blog_by_id(2)
+        self.topic.set_title('text boundary test')
+        self.topic.set_short_text('short_text')
+        self.topic.italic()
+        text = self.topic.get_editor_text()
+        self.assertEqual(text, ITALIC_LINE)

@@ -1,4 +1,9 @@
 __author__ = 'dmitry'
+
+"""
+Тесты добавления топиков, где топик должен создаваться
+"""
+
 import unittest
 from pages.page import PageObject
 

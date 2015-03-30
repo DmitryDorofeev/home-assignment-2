@@ -96,8 +96,52 @@ class PageObject():
         return error.is_displayed()
 
     def bold(self):
-        bold_btn = self.driver.find_element_by_css_selector('#container .editor-bold>a')
+        bold_btn = self.driver.find_element_by_css_selector('#container .markdown-editor-icon-bold')
         bold_btn.click()
+
+    def italic(self):
+        italic_btn = self.driver.find_element_by_css_selector('#container .markdown-editor-icon-italic')
+        italic_btn.click()
+
+    def quote(self):
+        quote_btn = self.driver.find_element_by_css_selector('#container .markdown-editor-icon-quote')
+        quote_btn.click()
+
+    def unordered_list(self):
+        quote_btn = self.driver.find_element_by_css_selector('#container .markdown-editor-icon-unordered-list')
+        quote_btn.click()
+
+    def ordered_list(self):
+        quote_btn = self.driver.find_element_by_css_selector('#container .markdown-editor-icon-ordered-list')
+        quote_btn.click()
+
+    def link(self):
+        quote_btn = self.driver.find_element_by_xpath('//[id="container"]//a[class="markdown-editor-icon-link"][1]')
+        quote_btn.click()
+
+    def insert_image(self):
+        quote_btn = self.driver.find_element_by_xpath('//[id="container"]//a[class="markdown-editor-icon-image"][1]')
+        quote_btn.click()
+
+    def load_image(self):
+        quote_btn = self.driver.find_element_by_xpath('//[id="container"]//a[class="markdown-editor-icon-image"][2]')
+        quote_btn.click()
+
+    def insert_user(self):
+        quote_btn = self.driver.find_element_by_xpath('//[id="container"]//a[class="markdown-editor-icon-link"][2]')
+        quote_btn.click()
+
+    def ordered_list(self):
+        quote_btn = self.driver.find_element_by_css_selector('#container .markdown-editor-icon-ordered-list')
+        quote_btn.click()
+
+    def preview(self):
+        quote_btn = self.driver.find_element_by_css_selector('#container .markdown-editor-icon-preview')
+        quote_btn.click()
+
+    def add_poll(self):
+        poll_checkbox = self.driver.find_element_by_css_selector('#container [name="add_poll"]')
+        poll_checkbox.click()
 
     def select_text(self):
         field = self.driver.find_element_by_id('id_text')
