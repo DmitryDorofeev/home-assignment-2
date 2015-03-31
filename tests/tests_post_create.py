@@ -91,7 +91,7 @@ class PostCreateTestCase(unittest.TestCase):
         text = self.topic.get_ul_text()
         self.assertEqual(text, TEST_TEXT)
 
-    def test_create_img(self):
+    def test_create_with_img(self):
         self.topic.select_blog_by_id(2)
         self.topic.set_title('test')
         self.topic.set_short_text('text')
@@ -99,3 +99,12 @@ class PostCreateTestCase(unittest.TestCase):
         self.topic.save()
         src = self.topic.get_img_text()
         self.assertEqual(src, TEST_IMG)
+
+    def test_create_with_user(self):
+        self.topic.select_blog_by_id(2)
+        self.topic.set_title('test')
+        self.topic.set_short_text('text')
+        self.topic.set_text('[Alkid](/profile/a.manilov/)')
+        self.topic.save()
+        href = self.topic.get_link()
+        self.assertIn('/profile/a.manilov/', href)

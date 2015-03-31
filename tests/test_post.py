@@ -16,6 +16,7 @@ UL_LINE = '* '
 OL_LINE = '1. '
 LINK_LINE = '[](http://mail.ru)'
 IMG_LINE = '![](http://www.bmstu.ru/content/images/medium/img_2149.png)'
+IMG_PATH = '/Users/dmitry/pic.jpg'
 
 
 class PostTestCase(unittest.TestCase):
@@ -109,6 +110,6 @@ class PostTestCase(unittest.TestCase):
 
     def test_upload_image(self):
         self.topic.select_blog_by_id(2)
-        self.topic.load_image()
+        self.topic.load_image(IMG_PATH)
         text = self.topic.get_editor_short_text()
         self.assertIn('.jpg', text)

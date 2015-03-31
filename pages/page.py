@@ -54,7 +54,7 @@ class PageObject():
     def has_text_field(self):
         wait = WebDriverWait(self.driver, 10)
         field = wait.until(
-            EC.element_to_be_clickable((By.ID, 'id_text')))
+            EC.visibility_of_element_located((By.ID, 'id_text')))
         return field.is_displayed()
 
     def select_blog_by_id(self, num):
@@ -136,15 +136,12 @@ class PageObject():
         alert.send_keys(link)
         alert.accept()
 
-    def load_image(self):
-        quote_btn = self.driver.find_element_by_xpath('//*[@id="container"]//a[@class="markdown-editor-icon-image"][2]')
-        quote_btn.click()
-        self.driver.find_element_by_xpath('(//input[@name="filedata"])[1]').send_keys('/Users/dmitry/pic.jpg')
-
+    def load_image(self, path):
+        self.driver.find_element_by_xpath('(//input[@name="filedata"])[1]').send_keys(path)
         WebDriverWait(self.driver, 30, 0.1).until(
             EC.presence_of_element_located((By.XPATH, '(//input[@name="filedata"])[1]')))
 
-        time.sleep(1)
+        time.sleep(3)
 
     def insert_user(self):
         quote_btn = self.driver.find_element_by_xpath('//*[@id="container"]//a[@class="markdown-editor-icon-link"][2]')
@@ -225,3 +222,10 @@ class PageObject():
         except NoSuchElementException:
             return None
         return url
+
+    def get_link(self):
+        try:
+            link = self.driver.find_element_by_xpath('//*[contains(@class, "topic-content")]/p/a').get_attribute('href')
+        except NoSuchElementException:
+            return None
+        return link
