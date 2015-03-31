@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import ActionChains
 import os
 import time
@@ -157,9 +158,16 @@ class PageObject():
         quote_btn = self.driver.find_element_by_css_selector('#container .markdown-editor-icon-preview')
         quote_btn.click()
 
-    def add_poll(self):
+    def add_poll(self, question, answer1, answer2):
         poll_checkbox = self.driver.find_element_by_css_selector('#container [name="add_poll"]')
         poll_checkbox.click()
+        wait = WebDriverWait(self.driver, 10)
+        elem = wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="id_question"]')))
+        elem.send_keys(question)
+        ans1 = self.driver.find_element_by_id('id_form-0-answer')
+        ans2 = self.driver.find_element_by_id('id_form-1-answer')
+        ans1.send_keys(answer1)
+        ans2.send_keys(answer2)
 
     def select_text(self):
         field = self.driver.find_element_by_id('id_text')
@@ -177,3 +185,43 @@ class PageObject():
         field = wait.until(
             EC.element_to_be_clickable((By.XPATH, TEXT_FIELD)))
         return field.text
+
+    def find_poll(self):
+        ans1 = self.driver.find_element_by_xpath('.//ul[@class="poll-vote"]/li[1]/label').text
+        ans2 = self.driver.find_element_by_xpath('.//ul[@class="poll-vote"]/li[2]/label').text
+        return ans1, ans2
+
+    def get_bold_text(self):
+        try:
+            text = self.driver.find_element_by_xpath('//*[contains(@class,"topic-content")]/p/strong').text
+        except NoSuchElementException:
+            return None
+        return text
+
+    def get_italic_text(self):
+        try:
+            text = self.driver.find_element_by_xpath('//*[contains(@class, "topic-content")]/p/em').text
+        except NoSuchElementException:
+            return None
+        return text
+
+    def get_ol_text(self):
+        try:
+            text = self.driver.find_element_by_xpath('//*[contains(@class, "topic-content")]/ol').text
+        except NoSuchElementException:
+            return None
+        return text
+
+    def get_ul_text(self):
+        try:
+            text = self.driver.find_element_by_xpath('//*[contains(@class, "topic-content")]/ul').text
+        except NoSuchElementException:
+            return None
+        return text
+
+    def get_img_text(self):
+        try:
+            url = self.driver.find_element_by_xpath('//*[contains(@class, "topic-content")]/p/img').get_attribute('src')
+        except NoSuchElementException:
+            return None
+        return url
