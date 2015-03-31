@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 __author__ = 'dmitry'
 
 """
@@ -10,6 +11,11 @@ from pages.page import PageObject
 TITLE_BOUNDARY = 250
 BOLD_LINE = '****'
 ITALIC_LINE = '**'
+QUOTE_LINE = '>'
+UL_LINE = '* '
+OL_LINE = '1. '
+LINK_LINE = '[](http://mail.ru)'
+IMG_LINE = '![](http://www.bmstu.ru/content/images/medium/img_2149.png)'
 
 
 class PostTestCase(unittest.TestCase):
@@ -61,16 +67,48 @@ class PostTestCase(unittest.TestCase):
 
     def test_create_bold_text(self):
         self.topic.select_blog_by_id(2)
-        self.topic.set_title('text boundary test')
-        self.topic.set_short_text('short_text')
         self.topic.bold()
-        text = self.topic.get_editor_text()
+        text = self.topic.get_editor_short_text().strip()
         self.assertEqual(text, BOLD_LINE)
 
     def test_create_italic_text(self):
         self.topic.select_blog_by_id(2)
-        self.topic.set_title('text boundary test')
-        self.topic.set_short_text('short_text')
         self.topic.italic()
-        text = self.topic.get_editor_text()
+        text = self.topic.get_editor_short_text().strip()
         self.assertEqual(text, ITALIC_LINE)
+
+    def test_create_quote(self):
+        self.topic.select_blog_by_id(2)
+        self.topic.quote()
+        text = self.topic.get_editor_short_text().strip()
+        self.assertEqual(text, QUOTE_LINE)
+
+    def test_create_ul(self):
+        self.topic.select_blog_by_id(2)
+        self.topic.unordered_list()
+        text = self.topic.get_editor_short_text()
+        self.assertEqual(text, UL_LINE)
+
+    def test_create_ol(self):
+        self.topic.select_blog_by_id(2)
+        self.topic.ordered_list()
+        text = self.topic.get_editor_short_text()
+        self.assertEqual(text, OL_LINE)
+
+    def test_create_link(self):
+        self.topic.select_blog_by_id(2)
+        self.topic.link('http://mail.ru')
+        text = self.topic.get_editor_short_text()
+        self.assertEqual(text, LINK_LINE)
+
+    def test_insert_image(self):
+        self.topic.select_blog_by_id(2)
+        self.topic.insert_image('http://www.bmstu.ru/content/images/medium/img_2149.png')
+        text = self.topic.get_editor_short_text()
+        self.assertEqual(text, IMG_LINE)
+
+    def test_upload_image(self):
+        self.topic.select_blog_by_id(2)
+        self.topic.load_image()
+        text = self.topic.get_editor_short_text()
+        self.assertIn('.jpg', text)

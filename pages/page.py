@@ -5,8 +5,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver import ActionChains
 import os
 import time
+
+SHORT_TEXT_FIELD = '//form/div/div[contains(@class, "CodeMirror")][1]//*[@class="CodeMirror-code"]/pre'
+TEXT_FIELD = '//form/div/div[contains(@class, "CodeMirror")][2]//*[@class="CodeMirror-code"]/pre'
 
 
 class PageObject():
@@ -66,12 +70,14 @@ class PageObject():
         field.send_keys(title)
 
     def set_short_text(self, text):
-        field = self.driver.find_element_by_id('id_text_short')
-        field.send_keys(text)
+        field = self.driver.find_element_by_xpath(SHORT_TEXT_FIELD)
+        field.click()
+        ActionChains(self.driver).send_keys(text).perform()
 
     def set_text(self, text):
-        field = self.driver.find_element_by_id('id_text')
-        field.send_keys(text)
+        field = self.driver.find_element_by_xpath(TEXT_FIELD)
+        field.click()
+        ActionChains(self.driver).send_keys(text).perform()
 
     def get_content(self):
         content = self.driver.find_element_by_css_selector('.topic-content')
@@ -108,27 +114,39 @@ class PageObject():
         quote_btn.click()
 
     def unordered_list(self):
-        quote_btn = self.driver.find_element_by_css_selector('#container .markdown-editor-icon-unordered-list')
-        quote_btn.click()
+        ul_btn = self.driver.find_element_by_css_selector('#container .markdown-editor-icon-unordered-list')
+        ul_btn.click()
 
     def ordered_list(self):
-        quote_btn = self.driver.find_element_by_css_selector('#container .markdown-editor-icon-ordered-list')
-        quote_btn.click()
+        ol_btn = self.driver.find_element_by_css_selector('#container .markdown-editor-icon-ordered-list')
+        ol_btn.click()
 
-    def link(self):
-        quote_btn = self.driver.find_element_by_xpath('//[id="container"]//a[class="markdown-editor-icon-link"][1]')
-        quote_btn.click()
+    def link(self, link):
+        link_btn = self.driver.find_element_by_xpath('//*[@id="container"]//a[@class="markdown-editor-icon-link"][1]')
+        link_btn.click()
+        alert = self.driver.switch_to.alert
+        alert.send_keys(link)
+        alert.accept()
 
-    def insert_image(self):
-        quote_btn = self.driver.find_element_by_xpath('//[id="container"]//a[class="markdown-editor-icon-image"][1]')
-        quote_btn.click()
+    def insert_image(self, link):
+        img_btn = self.driver.find_element_by_xpath('//*[@id="container"]//a[@class="markdown-editor-icon-image"][1]')
+        img_btn.click()
+        alert = self.driver.switch_to.alert
+        alert.send_keys(link)
+        alert.accept()
 
     def load_image(self):
-        quote_btn = self.driver.find_element_by_xpath('//[id="container"]//a[class="markdown-editor-icon-image"][2]')
+        quote_btn = self.driver.find_element_by_xpath('//*[@id="container"]//a[@class="markdown-editor-icon-image"][2]')
         quote_btn.click()
+        self.driver.find_element_by_xpath('(//input[@name="filedata"])[1]').send_keys('/Users/dmitry/pic.jpg')
+
+        WebDriverWait(self.driver, 30, 0.1).until(
+            EC.presence_of_element_located((By.XPATH, '(//input[@name="filedata"])[1]')))
+
+        time.sleep(1)
 
     def insert_user(self):
-        quote_btn = self.driver.find_element_by_xpath('//[id="container"]//a[class="markdown-editor-icon-link"][2]')
+        quote_btn = self.driver.find_element_by_xpath('//*[@id="container"]//a[@class="markdown-editor-icon-link"][2]')
         quote_btn.click()
 
     def ordered_list(self):
@@ -148,8 +166,14 @@ class PageObject():
         field.click()
         self.driver.implicitly_wait(10)
 
+    def get_editor_short_text(self):
+        wait = WebDriverWait(self.driver, 10)
+        field = wait.until(
+            EC.element_to_be_clickable((By.XPATH, SHORT_TEXT_FIELD)))
+        return field.text
+
     def get_editor_text(self):
         wait = WebDriverWait(self.driver, 10)
         field = wait.until(
-            EC.text_to_be_present_in_element((By.ID, 'id_text')))
+            EC.element_to_be_clickable((By.XPATH, TEXT_FIELD)))
         return field.text
