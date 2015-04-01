@@ -4,7 +4,7 @@ __author__ = 'dmitry'
 """
 Тесты добавления топиков, где топик не должен создаваться
 """
-
+import os
 import unittest
 from pages.page import PageObject
 
@@ -16,7 +16,7 @@ UL_LINE = '* '
 OL_LINE = '1. '
 LINK_LINE = '[](http://mail.ru)'
 IMG_LINE = '![](http://www.bmstu.ru/content/images/medium/img_2149.png)'
-IMG_PATH = '/Users/dmitry/pic.jpg'
+IMG_PATH = os.path.dirname(__file__) + '/images/pic.jpg'
 
 
 class PostTestCase(unittest.TestCase):
@@ -104,7 +104,7 @@ class PostTestCase(unittest.TestCase):
 
     def test_insert_image(self):
         self.topic.select_blog_by_id(2)
-        self.topic.insert_image('http://www.bmstu.ru/content/images/medium/img_2149.png')
+        self.topic.insert_image(IMG_LINE)
         text = self.topic.get_editor_short_text()
         self.assertEqual(text, IMG_LINE)
 

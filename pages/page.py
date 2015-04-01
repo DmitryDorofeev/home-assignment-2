@@ -41,7 +41,7 @@ class PageObject():
         return user.is_displayed()
 
     def close(self):
-        self.driver.close()
+        self.driver.quit()
 
     def open_create_topic(self):
         button = self.driver.find_element_by_id('modal_write_show')
