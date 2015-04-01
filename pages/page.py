@@ -72,13 +72,17 @@ class PageObject():
 
     def set_short_text(self, text):
         field = self.driver.find_element_by_xpath(SHORT_TEXT_FIELD)
-        field.click()
-        ActionChains(self.driver).send_keys(text).perform()
+        ActionChains(self.driver).click(field).send_keys(text).perform()
+        WebDriverWait(self.driver, 10).until(
+            lambda _: field.text.strip() != ''
+        )
 
     def set_text(self, text):
         field = self.driver.find_element_by_xpath(TEXT_FIELD)
-        field.click()
-        ActionChains(self.driver).send_keys(text).perform()
+        ActionChains(self.driver).click(field).send_keys(text).perform()
+        WebDriverWait(self.driver, 10).until(
+            lambda _: field.text.strip() != ''
+        )
 
     def get_content(self):
         content = self.driver.find_element_by_css_selector('.topic-content')
@@ -220,14 +224,14 @@ class PageObject():
 
     def get_img_text(self):
         try:
-            url = self.driver.find_element_by_xpath('//*[contains(@class, "topic-content")]/p/img').get_attribute('src')
+            url = self.driver.find_element_by_xpath('//*[contains(@class, "topic-content")]//img').get_attribute('src')
         except NoSuchElementException:
             return None
         return url
 
     def get_link(self):
         try:
-            link = self.driver.find_element_by_xpath('//*[contains(@class, "topic-content")]/p/a').get_attribute('href')
+            link = self.driver.find_element_by_xpath('//*[contains(@class, "topic-content")]//a').get_attribute('href')
         except NoSuchElementException:
             return None
         return link

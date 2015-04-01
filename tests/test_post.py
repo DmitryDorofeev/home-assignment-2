@@ -27,7 +27,6 @@ class PostTestCase(unittest.TestCase):
         self.topic.go_to_topic_edit()
 
     def tearDown(self):
-        pass
         self.topic.close()
 
     def test_create_without_blog(self):
