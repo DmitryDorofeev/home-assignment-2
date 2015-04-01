@@ -14,9 +14,9 @@ if __name__ == '__main__':
         sys.exit('No password set')
 
     suite = unittest.TestSuite((
-        # unittest.makeSuite(PostTestCase),
+        unittest.makeSuite(PostTestCase),
         unittest.makeSuite(PostCreateTestCase),
-        # unittest.makeSuite(MainTestCase),
+        unittest.makeSuite(MainTestCase),
     ))
     result = unittest.TextTestRunner().run(suite)
     sys.exit(not result.wasSuccessful())
