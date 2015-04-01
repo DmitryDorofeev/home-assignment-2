@@ -15,7 +15,8 @@ QUOTE_LINE = '>'
 UL_LINE = '* '
 OL_LINE = '1. '
 LINK_LINE = '[](http://mail.ru)'
-IMG_LINE = '![](http://www.bmstu.ru/content/images/medium/img_2149.png)'
+IMG_URL = 'http://www.bmstu.ru/content/images/medium/img_2149.png'
+IMG_LINE = '![]({})'.format(IMG_URL)
 IMG_PATH = os.path.dirname(__file__) + '/images/pic.jpg'
 
 
@@ -88,25 +89,25 @@ class PostTestCase(unittest.TestCase):
         self.topic.select_blog_by_id(2)
         self.topic.unordered_list()
         text = self.topic.get_editor_short_text()
-        self.assertEqual(text, UL_LINE)
+        self.assertIn(UL_LINE, text)
 
     def test_create_ol(self):
         self.topic.select_blog_by_id(2)
         self.topic.ordered_list()
         text = self.topic.get_editor_short_text()
-        self.assertEqual(text, OL_LINE)
+        self.assertIn(OL_LINE, text)
 
     def test_create_link(self):
         self.topic.select_blog_by_id(2)
         self.topic.link('http://mail.ru')
         text = self.topic.get_editor_short_text()
-        self.assertEqual(text, LINK_LINE)
+        self.assertIn(LINK_LINE, text)
 
     def test_insert_image(self):
         self.topic.select_blog_by_id(2)
-        self.topic.insert_image(IMG_LINE)
+        self.topic.insert_image(IMG_URL)
         text = self.topic.get_editor_short_text()
-        self.assertEqual(text, IMG_LINE)
+        self.assertIn(IMG_LINE, text)
 
     def test_upload_image(self):
         self.topic.select_blog_by_id(2)

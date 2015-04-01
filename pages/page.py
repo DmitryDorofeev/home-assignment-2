@@ -10,8 +10,8 @@ from selenium.webdriver import ActionChains
 import os
 import time
 
-SHORT_TEXT_FIELD = '//form/div/div[contains(@class, "CodeMirror")][1]//*[@class="CodeMirror-code"]/pre'
-TEXT_FIELD = '//form/div/div[contains(@class, "CodeMirror")][2]//*[@class="CodeMirror-code"]/pre'
+SHORT_TEXT_FIELD = '(//*[@class="CodeMirror-scroll"])[1]'
+TEXT_FIELD = '(//*[@class="CodeMirror-scroll"])[2]'
 
 
 class PageObject():
@@ -54,7 +54,7 @@ class PageObject():
     def has_text_field(self):
         wait = WebDriverWait(self.driver, 10)
         field = wait.until(
-            EC.visibility_of_element_located((By.ID, 'id_text')))
+            EC.visibility_of_element_located((By.XPATH, TEXT_FIELD)))
         return field.is_displayed()
 
     def select_blog_by_id(self, num):
