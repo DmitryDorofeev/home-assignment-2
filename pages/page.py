@@ -8,7 +8,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import ActionChains
 import os
-import time
+
 
 SHORT_TEXT_FIELD = '(//*[@class="CodeMirror-scroll"])[1]'
 TEXT_FIELD = '(//*[@class="CodeMirror-scroll"])[2]'
@@ -140,8 +140,10 @@ class PageObject():
         self.driver.find_element_by_xpath('(//input[@name="filedata"])[1]').send_keys(path)
         WebDriverWait(self.driver, 30, 0.1).until(
             EC.presence_of_element_located((By.XPATH, '(//input[@name="filedata"])[1]')))
+        WebDriverWait(self.driver, 10, 0.1).until(
+            lambda _: self.driver.find_element_by_xpath(SHORT_TEXT_FIELD).text.strip() != ''
+        )
 
-        time.sleep(3)
 
     def insert_user(self):
         quote_btn = self.driver.find_element_by_xpath('//*[@id="container"]//a[@class="markdown-editor-icon-link"][2]')
